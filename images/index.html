@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy 25th, Shruti 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fff7fb;
+      --card: #fff2f6;
+      --accent: #ff94c2;
+      --accent-2: #ffd7e8;
+      --text: #3b2f3b;
+      --muted: #7a5b6e;
+      --shadow: 0 8px 30px rgba(99, 44, 86, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(circle at 10% 10%, #fff0f6 0%, var(--bg) 40%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.45;
+    }
+
+    header {
+      padding: 48px 20px 10px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #6b2641;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 28px auto 120px;
+      padding: 0 18px;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 30px 0;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      height: 100%;
+      width: 4px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, rgba(255, 148, 194, 0.25), rgba(255, 215, 232, 0.4));
+      box-shadow: 0 2px 0 rgba(255, 148, 194, 0.08) inset;
+    }
+
+    .event {
+      position: relative;
+      width: calc(50% - 30px);
+      padding: 18px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: 28px 0;
+      transition: transform .6s cubic-bezier(.2, .9, .3, 1), opacity .6s;
+      opacity: 0;
+      transform: translateY(24px) scale(.99);
+    }
+
+    .event.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .left {
+      float: left;
+      clear: both;
+    }
+
+    .right {
+      float: right;
+      clear: both;
+    }
+
+    .year {
+      font-weight: 600;
+      color: #6b2641;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .heart {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #ff5fa8);
+      display: inline-grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(255, 95, 168, 0.14);
+    }
+
+    .desc {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .marker {
+      position: absolute;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #fff, #ffdbe6);
+      border: 6px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(107, 38, 65, 0.08);
+      top: 0;
+    }
+
+    .final {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(180deg, #ffe9f4, #fff);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      margin-top: 36px;
+    }
+
+    .final h2 {
+      margin: 0 0 8px;
+      color: #6b2641
+    }
+
+    .final p {
+      margin: 0;
+      color: var(--muted)
+    }
+
+    .music {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: linear-gradient(180deg, #ffffff, #fff0f6);
+      border-radius: 12px;
+      padding: 8px 10px;
+      box-shadow: 0 10px 30px rgba(99, 44, 86, 0.08);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .music button {
+      border: 0;
+      background: transparent;
+      font-size: 16px;
+      cursor: pointer;
+      color: #6b2641;
+    }
+
+    .music small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @media (max-width:780px) {
+      .timeline::before {
+        left: 14px;
+        transform: none
+      }
+
+      .event {
+        width: 100%;
+        margin-left: 40px;
+        margin-right: 20px
+      }
+
+      .left,
+      .right {
+        float: none
+      }
+
+      .marker {
+        left: 14px;
+        transform: none
+      }
+    }
+
+    /* Floating hearts */
+    .float-heart {
+      position: fixed;
+      pointer-events: none;
+      opacity: .18;
+      z-index: 0;
+      filter: blur(.6px);
+      animation: floaty 8s infinite;
+    }
+
+    @keyframes floaty {
+      0% {
+        transform: translateY(0) rotate(0deg)
+      }
+
+      50% {
+        transform: translateY(-18px) rotate(8deg)
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg)
+      }
+    }
+
+    /* Memory box */
+    .photo-memory-box {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .photo-box {
+      position: relative;
+      width: 300px;
+      height: 380px;
+      margin: 0 auto;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      background: #ffd9ea;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.6s ease;
+    }
+
+    .photo-caption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 15px;
+      transition: opacity 0.6s ease;
+      min-height: 24px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="title">Happy 25th, Shruti Bansal 💕</div>
+    <div class="subtitle">A little story — from childhood, through the tough times, to the day we found each other.
+    </div>
+  </header>
+
+  <main>
+    <section class="timeline" id="timeline">
+
+      <div class="marker" style="top:24px"></div>
+
+      <article class="event left" data-when="2000">
+        <div class="year">
+          <div class="heart">🎀</div>
+          <div>2000 — Landed On earth to cause destruction</div>
+        </div>
+        <div class="desc">Finally on 17th October 2000, enough Harami's left the world (some say count reached 100) to
+          make space for our little Shruti into the world — ready to bloom and sparkle..</div>
+      </article>
+
+      <div class="marker" style="top:210px"></div>
+
+      <article class="event right" data-when="2015">
+        <div class="year">
+          <div class="heart">🌼</div>
+          <div>2015 — High school adventures</div>
+        </div>
+        <div class="desc">Full of pampered life, laughter and backchodi. Considered herself as mischievous back-bencher
+          but many argued is just a glorified front-desker😄.</div>
+      </article>
+
+      <div class="marker" style="top:420px"></div>
+
+      <article class="event left" data-when="2017">
+        <div class="year">
+          <div class="heart">💔</div>
+          <div>2017 — Hard times, but she grew stronger</div>
+        </div>
+        <div class="desc">A phase where she was just discovering life (and bad taste in men) even when better options
+          were closer and maybe in same year (Ahem). A chapter that taught resilience — she came through with grace and
+          courage.</div>
+      </article>
+
+      <div class="marker" style="top:630px"></div>
+
+      <article class="event right" data-when="2024">
+        <div class="year">
+          <div class="heart">❤️</div>
+          <div>2024 — Met Utkarsh — the start of “US”</div>
+        </div>
+        <div class="desc">And everything changed. Moments that became memories — the start of "us". Suddenly, her laugh
+          got louder, her worries got lighter, and her happiness...... permanent.</div>
+      </article>
+
+      <div class="marker" style="top:840px"></div>
+
+      <article class="event left" data-when="2025">
+        <div class="year">
+          <div class="heart">✈️</div>
+          <div>2025 — Our trips to Varanasi, Ayodhya, and Hampi</div>
+        </div>
+        <div class="desc">Two beautiful journeys — small adventures that became forever memories.</div>
+      </article>
+
+      <div style="clear:both"></div>
+
+      <div class="final">
+        <h2>To Shruti, with all my love</h2>
+        <p>Happy 25th birthday. Thank you for being you — brave, bright, and beautiful. — <strong>Utkarsh</strong></p>
+      </div>
+
+      <!-- Photo memory box -->
+      <div class="photo-memory-box">
+        <div class="photo-box" id="photoBox">
+          <img id="memoryImage" src="images/photo1.jpg" alt="Shruti memory photo">
+        </div>
+        <div class="photo-caption" id="memoryText">Your smile feels like home.</div>
+      </div>
+
+    </section>
+  </main>
+
+  <div class="music">
+    <audio id="bgm" loop src="1.m4a"></audio>
+    <button id="playBtn">▶️</button>
+    <small id="musicLabel">Stars belong with you</small>
+  </div>
+
+  <svg class="float-heart" style="left:12%;bottom:20%;" width="80" height="80" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M12 21s-7-4.35-9.2-7.1C.8 10.6 5.2 6 8.6 8.4 10 9.8 11 11 12 12c1-1 2-2.2 3.4-3.6 3.4-2.4 7.8 2.2 5.8 5.9C19 16.65 12 21 12 21z"
+      fill="#ffd3e6" />
+  </svg>
+
+  <script>
+    // reveal-on-scroll
+    const events = document.querySelectorAll('.event');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.18 });
+    events.forEach(ev => io.observe(ev));
+
+    // music controls
+    const bgm = document.getElementById('bgm');
+    const btn = document.getElementById('playBtn');
+    let playing = false;
+    btn.addEventListener('click', () => {
+      if (!playing) {
+        bgm.play().catch(() => { });
+        btn.textContent = '⏸️';
+        playing = true;
+      } else {
+        bgm.pause();
+        btn.textContent = '▶️';
+        playing = false;
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+
+    // Photo memory box slideshow
+    const images = [
+      "images/1.jpg", "images/2.jpg", "images/3.jpg", "images/4.jpg", "images/5.jpg", "images/6.jpg", "images/7.jpg", "images/8.jpg", "images/9.jpg", "images/10.jpg", "images/11.jpg", "images/12.jpg", "images/13.jpg", "images/14.jpg", "images/15.jpg", "images/16.jpg", "images/17.jpg", "images/18.jpg", "images/19.jpg", "images/20.jpg", "images/21.jpg", "images/22.jpg", "images/23.jpg", "images/24.jpg", "images/25.jpg", "images/26.jpg", "images/27.jpg", "images/28.jpg", "images/29.jpg", "images/30.jpg", "images/31.jpg", "images/32.jpg", "images/33.jpg", "images/34.jpg", "images/35.jpg", "images/36.jpg", "images/37.jpg", "images/38.jpg", "images/39.jpg", "images/40.jpg", "images/41.jpg", "images/42.jpg", "images/43.jpg", "images/44.jpg", "images/45.jpg", "images/46.jpg", "images/47.jpg"
+    ];
+
+    const texts = [
+      "Your smile feels like home.",
+      "You’re the calm to my chaos.",
+      "Every day with you is my favorite chapter.",
+      "You don’t just light up rooms — you light up hearts.",
+      "You make ordinary moments feel magical.",
+      "You’re my peace, my pride, and my person.",
+      "I fall for you a little more every day.",
+      "You’re the best decision I never had to think twice about."
+    ];
+
+    let currentIndex = 0;
+    const imgEl = document.getElementById('memoryImage');
+    const textEl = document.getElementById('memoryText');
+    const box = document.getElementById('photoBox');
+
+    box.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      imgEl.style.opacity = 0;
+      textEl.style.opacity = 0;
+      setTimeout(() => {
+        imgEl.src = images[currentIndex];
+        textEl.textContent = texts[currentIndex % texts.length];
+        imgEl.style.opacity = 1;
+        textEl.style.opacity = 1;
+      }, 400);
+    });
+  </script>
+
+</body>
+
+</html>
