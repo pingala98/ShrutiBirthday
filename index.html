@@ -344,7 +344,7 @@
       <!-- Photo memory box -->
       <div class="photo-memory-box">
         <div class="photo-box" id="photoBox">
-          <img id="memoryImage" src="images/photo1.jpg" alt="Shruti memory photo">
+          <img id="memoryImage" src="images/0.jpg" alt="Shruti memory photo">
         </div>
         <div class="photo-caption" id="memoryText">Your smile feels like home.</div>
       </div>
@@ -395,12 +395,9 @@
         btn.click();
       }
     });
-
-    // Photo memory box slideshow
-    const images = [
-      "images/0.jpg", "images/1.jpg", "images/2.jpg", "images/3.jpg", "images/4.jpg", "images/5.jpg", "images/6.jpg", "images/7.jpg", "images/8.jpg", "images/9.jpg", "images/10.jpg", "images/11.jpg", "images/12.jpg", "images/13.jpg", "images/14.jpg", "images/15.jpg", "images/16.jpg", "images/17.jpg", "images/18.jpg", "images/19.jpg", "images/20.jpg", "images/21.jpg", "images/22.jpg", "images/23.jpg", "images/24.jpg", "images/25.jpg", "images/26.jpg", "images/27.jpg", "images/28.jpg", "images/29.jpg", "images/30.jpg", "images/31.jpg", "images/32.jpg", "images/33.jpg", "images/34.jpg", "images/35.jpg", "images/36.jpg", "images/37.jpg", "images/38.jpg", "images/39.jpg", "images/40.jpg", "images/41.jpg", "images/42.jpg", "images/43.jpg", "images/44.jpg", "images/45.jpg", "images/46.jpg",
-    ];
-
+    // Photo memory box slideshow (auto-detect .jpg or .heic)
+    const TOTAL_IMAGES = 47; // 0..46
+    const FOLDER = "images"; // folder name
     const texts = [
       "Your smile feels like home.",
       "You’re the calm to my chaos.",
@@ -417,17 +414,51 @@
     const textEl = document.getElementById('memoryText');
     const box = document.getElementById('photoBox');
 
-    box.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      imgEl.style.opacity = 0;
-      textEl.style.opacity = 0;
-      setTimeout(() => {
-        imgEl.src = images[currentIndex];
-        textEl.textContent = texts[currentIndex % texts.length];
-        imgEl.style.opacity = 1;
-        textEl.style.opacity = 1;
-      }, 400);
-    });
+    // Helper: load image with .jpg fallback → .heic
+    function loadImage(i) {
+      return new Promise((resolve, reject) => {
+        const jpgPath = `${FOLDER}/${i}.jpg`;
+        const heicPath = `${FOLDER}/${i}.heic`;
+        const testImg = new Image();
+
+        // Try JPG first
+        testImg.onload = () => resolve(testImg.src);
+        testImg.onerror = () => {
+          const heicImg = new Image();
+          heicImg.onload = () => resolve(heicImg.src);
+          heicImg.onerror = reject;
+          heicImg.src = heicPath;
+        };
+
+        testImg.src = jpgPath;
+      });
+    }
+
+    async function showNextImage() {
+      // Move to next index
+      currentIndex = (currentIndex + 1) % TOTAL_IMAGES;
+
+      try {
+        const src = await loadImage(currentIndex);
+
+        imgEl.style.opacity = 0;
+        textEl.style.opacity = 0;
+
+        setTimeout(() => {
+          imgEl.src = src;
+          textEl.textContent = texts[currentIndex % texts.length];
+          imgEl.style.opacity = 1;
+          textEl.style.opacity = 1;
+        }, 400);
+      } catch {
+        console.warn(`Image ${currentIndex} not found — skipping.`);
+        showNextImage(); // Skip missing image gracefully
+      }
+    }
+
+    // Advance image on click
+    box.addEventListener('click', showNextImage);
+
   </script>
 
 </body>
